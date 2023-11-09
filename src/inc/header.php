@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <title>Register</title>
+    <title><?= $title ?? 'Home' ?></title>
 </head>
 <body>
 <main>
