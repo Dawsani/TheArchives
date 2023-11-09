@@ -17,9 +17,9 @@ include 'db_connection.php'
 <?php
 
 // Define initial SEARCH
-$sql = "SELECT DISTINCT title, name, post_date, user_count
+$sql = "SELECT DISTINCT title, name, post_date, user_count, cid
         FROM (
-            SELECT clip.title, game.name, clip.post_date, COUNT(clip_person.person_id) AS user_count, original_poster_id";
+            SELECT clip.title, clip.id AS cid, game.name, clip.post_date, COUNT(clip_person.person_id) AS user_count, original_poster_id";
 
 $search_constraints = 0;
 
@@ -120,7 +120,7 @@ $sql .= " GROUP BY clip.id";
 
 // if users are selected add the ORDER BY
 if ($users_are_selected == 1) {
-    $sql .= " ORDER BY user_count DESC";
+    $sql .= " ORDER BY user_count DESC, post_date";
 }
 
 // Add the last bit of the query
@@ -131,7 +131,7 @@ if ($result === TRUE) {
     #echo "Search succeeded. <br>";
 }
 else {
-    #echo "Error: " . $sql . "<br>" . $mysqli->error . "<br>";
+    echo "Error: " . $sql . "<br>" . $mysqli->error . "<br>";
 }
 
 $clip_contains_all_searched_users = 1;
@@ -143,9 +143,11 @@ if ($result->num_rows > 0) {
         echo "<br><h3>The following clips do not contain every selected user in your search.</h3><br><br>";
     }
     echo "<b>" . $row["title"] . "</b> " . $row["name"] . " " . $row["post_date"] . "<br>
-          <video width='640px' height='360px' controls='controls'>
+          <video width='640px' height='360px' controls='controls' volume='0.5' id='" . $row["cid"] . "'>
           <source src='clips/" . $row["title"] . ".mp4' type='video/mp4' />
-          </video> <br><br>";
+          </video> <br>
+          <button onclick=\"window.location.href = 'edit_clip_data.php?clip_id=" . $row['cid'] . "';\">Add tag</button>
+          <button onclick=\"window.location.href = 'share_clip.php?clip_id=" . $row['cid'] . "'\">Share</button><br><br>";
   }
 } 
 else {

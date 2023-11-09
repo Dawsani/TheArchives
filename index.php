@@ -17,7 +17,7 @@ include 'db_connection.php'
 <?php
 
 // Display all clips
-$sql = "SELECT clip.id as cid, title, post_date, name FROM clip JOIN game ON clip.game_id = game.id ORDER BY cid DESC LIMIT 20;";
+$sql = "SELECT clip.id as cid, title, post_date, name FROM clip JOIN game ON clip.game_id = game.id ORDER BY post_date DESC LIMIT 20;";
 $result = $mysqli->query($sql);
 
 if ($result->num_rows > 0) {
@@ -27,7 +27,8 @@ if ($result->num_rows > 0) {
           <video width='640px' height='360px' controls='controls' volume='0.5' id='" . $row["cid"] . "'>
           <source src='clips/" . $row["title"] . ".mp4' type='video/mp4' />
           </video> <br>
-          <button onclick=\"window.location.href = 'edit_clip_data.php?clip_id=" . $row['cid'] . "';\">Add tag</button><br><br>";
+          <button onclick=\"window.location.href = 'edit_clip_data.php?clip_id=" . $row['cid'] . "';\">Add tag</button>
+          <button onclick=\"window.location.href = 'share_clip.php?clip_id=" . $row['cid'] . "'\">Share</button><br><br>";
     
   }
 }

@@ -1,4 +1,4 @@
-<?php
+9<?php
 include 'db_connection.php'
 ?>
 
@@ -65,7 +65,7 @@ include 'db_connection.php'
     <!-- Games --> 
     <b>Games:</b> <br>
     <?php
-    $sql = "SELECT id, name FROM game";
+    $sql = "SELECT id, name FROM game ORDER BY name";
     $result = $mysqli->query($sql);
     while ($row = mysqli_fetch_assoc($result)) {
       echo '<input type="checkbox" name="selected_games[]" value="' . $row['id'] . '">';
