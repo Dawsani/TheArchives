@@ -6,33 +6,103 @@ include 'db_connection.php'
 <html lang="en">
 <head>
     <title>The Archives</title>
+    <style>
+        body {
+            background-color: #333; /* Darker background color for the page */
+            color: #fff; /* Light text color */
+            font-family: Arial, sans-serif;
+            text-align: center;
+            padding: 20px;
+        }
+
+        main {
+            background-color: #222; /* Darker background color for the form */
+            border-radius: 10px;
+            padding: 20px;
+            width: 300px;
+            margin: 0 auto;
+        }
+
+        h1 {
+            color: #fff; /* Light text color for header */
+        }
+
+        label {
+            display: block;
+            color: #fff;
+            text-align: left;
+            margin-top: 10px;
+        }
+
+        input {
+            width: 100%;
+            padding: 10px;
+            border: none;
+            margin: 5px 0;
+            border-radius: 5px;
+            box-sizing: border-box; /* Include padding and border in width and height */
+        }
+
+        .checkbox-container {
+            display: flex;
+            align-items: center;
+        }
+
+        .checkbox-label {
+            color: #fff;
+            margin-left: 10px; /* Add some spacing between checkbox and text */
+        }
+
+        .checkbox-label input {
+            margin-right: 5px; /* Add spacing between checkbox and text */
+        }
+
+        button {
+            background-color: #FF4500; /* Fiery orange-red button background color */
+            color: #fff; /* Light text color for buttons */
+            padding: 10px;
+            border: none;
+            cursor: pointer;
+            margin: 10px 0;
+            border-radius: 5px;
+        }
+
+        footer {
+            color: #fff;
+            margin-top: 10px;
+        }
+    </style>
 </head>
 <body>
 <main>
+    <form action="login.php" method="post">
+        <h1>Log In</h1>
 
-<form action="login.php" method="post">
-    <h1>Log In</h1>
+        <div>
+            <label for="email">Email:</label>
+            <input type="email" name="email" id="email" required>
+        </div>
 
-    <div>
-        <label for="email">Email:</label>
-        <input type="email" name="email" id="email" required>
-    </div>
+        <div>
+            <label for="password">Password:</label>
+            <input type="password" name="password" id="password" required>
+        </div>
 
-    <div>
-        <label for="password">Password:</label>
-        <input type="password" name="password" id="password" required>
-    </div>
+        <div class="checkbox-container">
+            <label class="checkbox-label">
+                <input type="checkbox" id="remember_me" name="remember_me" value="1">
+                Recuerda Me (Por 30 dias)
+            </label>
+        </div>
 
-    <input type="checkbox" id="remember_me" name="remember_me" value="1">Recuerda Me (Por 30 dias)</button><br>
-    <button type="submit">Log In</button>
+        <button type="submit">Log In</button>
 
-    <footer>Not a member yet? Cringe. Hop on: <a href="register.php">Sign Up</a></footer>
-
-</form>
-
+        <footer>Not a member yet? Cringe. Hop on: <a href="register.php">Sign Up</a></footer>
+    </form>
 </main>
 </body>
 </html>
+
 
 <?php
 if ($_SERVER["REQUEST_METHOD"] == "POST") {

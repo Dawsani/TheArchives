@@ -1,21 +1,80 @@
 <?php
-include 'db_connection.php'
+include 'db_connection.php';
 ?>
 
-<html>
-
+<!DOCTYPE html>
+<html lang="en">
 <head>
-</head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Clip Search Results</title>
+    <style>
+        body {
+            background-color: #333;
+            color: #fff;
+            font-family: Arial, sans-serif;
+            text-align: center;
+            padding: 20px;
+        }
 
+        header {
+            background-color: #222;
+            padding: 10px;
+        }
+
+        h1 {
+            color: #fff;
+        }
+
+        button {
+            background-color: #FF4500;
+            color: #fff;
+            padding: 10px;
+            border: none;
+            cursor: pointer;
+            margin: 10px;
+            border-radius: 5px;
+        }
+
+        .video-container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        .video-card {
+            margin: 20px;
+            text-align: center;
+            padding: 10px;
+            background-color: #222; /* Fiery orange-red background color for the cards */
+            border-radius: 10px;
+            border: 2px solid transparent; /* No colored border */
+            }
+
+        .video-card h3 {
+            font-size: 18px;
+            margin-bottom: 10px;
+        }
+
+        .video-card video {
+            width: 100%;
+        }
+
+        .video-actions {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 10px;
+        }
+    </style>
+</head>
 <body>
 <header>
-  <h1>Clip Search Results</h1>
+    <h1>Clip Search Results</h1>
     <button onclick="window.location.href = 'index.php'">Home</button>
     <button onclick="window.location.href = 'clip_search.php'">Search Clips</button>
 </header>
 
 <?php
-
 // Define initial SEARCH
 $sql = "SELECT DISTINCT title, name, post_date, user_count, cid
         FROM (
@@ -127,7 +186,7 @@ if ($users_are_selected == 1) {
 $sql .= ") AS subquery;";
 
 $result = $mysqli->query($sql);
-if ($result === TRUE) {
+if ($result == TRUE) {
     #echo "Search succeeded. <br>";
 }
 else {
@@ -155,8 +214,25 @@ else {
 }
 $mysqli->close();
 
+if ($result->num_rows > 0) {
+    echo '<div class="video-container">';
+    while ($row = $result->fetch_assoc()) {
+        echo '<div class="video-card">';
+        echo '<h3>' . $row["title"] . '</h3>';
+        echo '<video controls="controls" volume="0.5" id="' . $row["cid"] . '">';
+        echo '<source src="clips/' . $row["title"] . '.mp4" type="video/mp4" />';
+        echo '</video>';
+        echo '<div class="video-actions">';
+        echo '<button onclick="window.location.href = \'edit_clip_data.php?clip_id=' . $row['cid'] . '\';">Add tag</button>';
+        echo '<button onclick="window.location.href = \'share_clip.php?clip_id=' . $row['cid'] . '\'">Share</button>';
+        echo '</div>';
+        echo '</div>';
+    }
+    echo '</div>';
+} else {
+    echo "<p>No results</p>";
+}
+$mysqli->close();
 ?>
-
 </body>
-
 </html>
