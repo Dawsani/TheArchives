@@ -9,63 +9,64 @@ include 'db_connection.php';
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Clip Search Results</title>
     <style>
-        body {
-            background-color: #333;
-            color: #fff;
-            font-family: Arial, sans-serif;
-            text-align: center;
-            padding: 20px;
-        }
+    body {
+      background-color: #333;
+      color: #fff;
+      font-family: Arial, sans-serif;
+      text-align: center;
+      padding: 20px;
+    }
 
-        header {
-            background-color: #222;
-            padding: 10px;
-        }
+    header {
+      background-color: #222;
+      padding: 10px;
+    }
 
-        h1 {
-            color: #fff;
-        }
+    h1 {
+      color: #fff;
+    }
 
-        button {
-            background-color: #FF4500;
-            color: #fff;
-            padding: 10px;
-            border: none;
-            cursor: pointer;
-            margin: 10px;
-            border-radius: 5px;
-        }
+    .video-container {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
 
-        .video-container {
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: center;
-        }
+    .video-card {
+      margin: 20px;
+      text-align: center;
+      padding: 10px;
+      background-color: #222;
+      border-radius: 10px;
+      border: 2px solid transparent;
+    }
 
-        .video-card {
-            margin: 20px;
-            text-align: center;
-            padding: 10px;
-            background-color: #222; /* Fiery orange-red background color for the cards */
-            border-radius: 10px;
-            border: 2px solid transparent; /* No colored border */
-            }
+    video {
+      width: 100%;
+      max-width: 640px;
+      height: auto;
+    }
 
-        .video-card h3 {
-            font-size: 18px;
-            margin-bottom: 10px;
-        }
+    img {
+      width: 100%;
+      max-width: 640px;
+      height: auto;
+      cursor: pointer;
+    }
 
-        .video-card video {
-            width: 100%;
-        }
+    button {
+      background-color: #FF4500;
+      color: #fff;
+      padding: 5px 10px;
+      border: none;
+      cursor: pointer;
+      margin: 5px;
+    }
 
-        .video-actions {
-            display: flex;
-            justify-content: space-between;
-            margin-top: 10px;
-        }
-    </style>
+    .show-more-container {
+      margin-top: 20px; /* Adjust the margin as needed */
+    }
+  </style>
 </head>
 <body>
 <header>
@@ -182,8 +183,17 @@ if ($users_are_selected == 1) {
     $sql .= " ORDER BY user_count DESC, post_date";
 }
 
+// Set the number of clips to show per page
+$clipsPerPage = 21;
+
+// Get the page number from the URL or set it to 1 if not present
+$currentPage = isset($_GET['page']) ? (int)$_GET['page'] : 1;
+
+// Calculate the offset based on the current page
+$offset = ($currentPage - 1) * $clipsPerPage;
+
 // Add the last bit of the query
-$sql .= ") AS subquery;";
+$sql .= ") AS subquery LIMIT " . $clipsPerPage . " OFFSET " . $offset . ";";
 
 $result = $mysqli->query($sql);
 if ($result == TRUE) {
@@ -196,43 +206,50 @@ else {
 $clip_contains_all_searched_users = 1;
 // Display all searched clips
 if ($result->num_rows > 0) {
-  while($row = $result->fetch_assoc()) {
-    if ($clip_contains_all_searched_users ==  1 && isset($_POST['selected_users']) && $row["user_count"] != count($selected_users_array)) {
-        $clip_contains_all_searched_users = 0;
-        echo "<br><h3>The following clips do not contain every selected user in your search.</h3><br><br>";
-    }
-    echo "<b>" . $row["title"] . "</b> " . $row["name"] . " " . $row["post_date"] . "<br>
-          <video width='640px' height='360px' controls='controls' volume='0.5' id='" . $row["cid"] . "'>
-          <source src='clips/" . $row["title"] . ".mp4' type='video/mp4' />
-          </video> <br>
-          <button onclick=\"window.location.href = 'edit_clip_data.php?clip_id=" . $row['cid'] . "';\">Add tag</button>
-          <button onclick=\"window.location.href = 'share_clip.php?clip_id=" . $row['cid'] . "'\">Share</button><br><br>";
-  }
-} 
-else {
-  echo "No results";
-}
-$mysqli->close();
-
-if ($result->num_rows > 0) {
-    echo '<div class="video-container">';
+    echo "<div class=\"video-container\">";
     while ($row = $result->fetch_assoc()) {
-        echo '<div class="video-card">';
-        echo '<h3>' . $row["title"] . '</h3>';
-        echo '<video controls="controls" volume="0.5" id="' . $row["cid"] . '">';
-        echo '<source src="clips/' . $row["title"] . '.mp4" type="video/mp4" />';
-        echo '</video>';
-        echo '<div class="video-actions">';
-        echo '<button onclick="window.location.href = \'edit_clip_data.php?clip_id=' . $row['cid'] . '\';">Add tag</button>';
-        echo '<button onclick="window.location.href = \'share_clip.php?clip_id=' . $row['cid'] . '\'">Share</button>';
-        echo '</div>';
-        echo '</div>';
+      echo "<div class='video-card'>
+              <b>" . $row["title"] . "</b> " . $row["name"] . " " . $row["post_date"] . "<br>
+              <img id='thumbnail-" . $row["cid"] . "' src='thumbnails/" . $row["title"] . ".jpg' onclick=\"toggleVideo('" . $row['cid'] . "', '" . $row['title'] . "')\">
+              <video id='video-player-" . $row["cid"] . "' controls style='display: none;'>
+                <!-- Initially, no source is specified -->
+              </video>
+              <br>
+              <button onclick=\"window.location.href = 'edit_clip_data.php?clip_id=" . $row['cid'] . "';\">Add tag</button>
+              <button onclick=\"window.location.href = 'share_clip.php?clip_id=" . $row['cid'] . "'\">Share</button><br><br>
+            </div>";
     }
-    echo '</div>';
-} else {
-    echo "<p>No results</p>";
-}
-$mysqli->close();
+    echo "</div>";
+  } else {
+    echo "0 results";
+  }
 ?>
+
+<!-- Show more button below the last row of clips -->
+<div class="show-more-container">
+  <?php
+  $nextPage = $currentPage + 1;
+  #echo "<button onclick=\"window.location.href = 'clip_search_result.php?page=$nextPage'\">Show More</button>";
+  ?>
+</div>
+
+<script>
+  function toggleVideo(videoId, clipName) {
+    var thumbnail = document.getElementById('thumbnail-' + videoId);
+    var videoPlayer = document.getElementById('video-player-' + videoId);
+
+    // Toggle the visibility of the thumbnail and video player
+    thumbnail.style.display = thumbnail.style.display === 'none' ? 'block' : 'none';
+    videoPlayer.style.display = videoPlayer.style.display === 'none' ? 'block' : 'none';
+
+    // If the video player is displayed, load the video
+    if (videoPlayer.style.display === 'block') {
+      videoPlayer.src = 'clips/' + clipName + '.mp4';
+      videoPlayer.load();
+      videoPlayer.play();
+    }
+  }
+</script>
+
 </body>
 </html>

@@ -48,7 +48,7 @@ include 'db_connection.php';
       width: 100%;
       max-width: 640px;
       height: auto;
-      cursor: pointer; /* Add this line to change cursor to pointer */
+      cursor: pointer;
     }
 
     button {
@@ -58,6 +58,10 @@ include 'db_connection.php';
       border: none;
       cursor: pointer;
       margin: 5px;
+    }
+
+    .show-more-container {
+      margin-top: 20px; /* Adjust the margin as needed */
     }
   </style>
 </head>
@@ -71,15 +75,24 @@ include 'db_connection.php';
 
 <div class="video-container">
   <?php
-  // Display all clips
-  $sql = "SELECT clip.id as cid, title, post_date, name FROM clip JOIN game ON clip.game_id = game.id ORDER BY post_date DESC LIMIT 20;";
+  // Set the number of clips to show per page
+  $clipsPerPage = 21;
+
+  // Get the page number from the URL or set it to 1 if not present
+  $currentPage = isset($_GET['page']) ? (int)$_GET['page'] : 1;
+
+  // Calculate the offset based on the current page
+  $offset = ($currentPage - 1) * $clipsPerPage;
+
+  // Display clips based on pagination
+  $sql = "SELECT clip.id as cid, title, post_date, name FROM clip JOIN game ON clip.game_id = game.id ORDER BY post_date DESC LIMIT $clipsPerPage OFFSET $offset;";
   $result = $mysqli->query($sql);
 
   if ($result->num_rows > 0) {
-    while($row = $result->fetch_assoc()) {
+    while ($row = $result->fetch_assoc()) {
       echo "<div class='video-card'>
               <b>" . $row["title"] . "</b> " . $row["name"] . " " . $row["post_date"] . "<br>
-              <img id='thumbnail-" . $row["cid"] . "' src='thumbnails/" . $row["title"] . ".jpg' onclick=\"toggleVideo('" . $row['cid'] . "', '" . $row['title']. "')\">
+              <img id='thumbnail-" . $row["cid"] . "' src='thumbnails/" . $row["title"] . ".jpg' onclick=\"toggleVideo('" . $row['cid'] . "', '" . $row['title'] . "')\">
               <video id='video-player-" . $row["cid"] . "' controls style='display: none;'>
                 <!-- Initially, no source is specified -->
               </video>
@@ -91,27 +104,34 @@ include 'db_connection.php';
   } else {
     echo "0 results";
   }
-  $mysqli->close();
   ?>
-
-  <script>
-    function toggleVideo(videoId, clipName) {
-      var thumbnail = document.getElementById('thumbnail-' + videoId);
-      var videoPlayer = document.getElementById('video-player-' + videoId);
-
-      // Toggle the visibility of the thumbnail and video player
-      thumbnail.style.display = thumbnail.style.display === 'none' ? 'block' : 'none';
-      videoPlayer.style.display = videoPlayer.style.display === 'none' ? 'block' : 'none';
-
-      // If the video player is displayed, load the video
-      if (videoPlayer.style.display === 'block') {
-        videoPlayer.src = 'clips/' + clipName + '.mp4';
-        videoPlayer.load();
-        videoPlayer.play();
-      }
-    }
-  </script>
 </div>
+
+<!-- Show more button below the last row of clips -->
+<div class="show-more-container">
+  <?php
+  $nextPage = $currentPage + 1;
+  echo "<button onclick=\"window.location.href = 'index.php?page=$nextPage'\">Show More</button>";
+  ?>
+</div>
+
+<script>
+  function toggleVideo(videoId, clipName) {
+    var thumbnail = document.getElementById('thumbnail-' + videoId);
+    var videoPlayer = document.getElementById('video-player-' + videoId);
+
+    // Toggle the visibility of the thumbnail and video player
+    thumbnail.style.display = thumbnail.style.display === 'none' ? 'block' : 'none';
+    videoPlayer.style.display = videoPlayer.style.display === 'none' ? 'block' : 'none';
+
+    // If the video player is displayed, load the video
+    if (videoPlayer.style.display === 'block') {
+      videoPlayer.src = 'clips/' + clipName + '.mp4';
+      videoPlayer.load();
+      videoPlayer.play();
+    }
+  }
+</script>
 
 </body>
 </html>

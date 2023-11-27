@@ -1,8 +1,20 @@
 <?php
 // Connect to mySQL
 include 'db_connection.php';
-?>
 
+// Function to generate a thumbnail using FFmpeg
+function generateThumbnail($inputVideo, $outputThumbnail) {
+    $ffmpegCommand = "ffmpeg -i \"$inputVideo\" -ss 00:00:00 -frames:v 1 \"$outputThumbnail\"";
+    exec($ffmpegCommand);
+}
+
+function compress_clip($inputVideo) {
+    $output_file = "clips/" . pathinfo($inputVideo, PATHINFO_FILENAME) . ".mp4";
+    $ffmpegCommand = "ffmpeg -i \"$inputVideo\" -s 852x480 -r 30 -c:v libx264 -crf 23 -c:a aac -b:a 128k \"$output_file\" > output.txt 2>&1";
+    exec($ffmpegCommand, $output, $returnCode);
+}
+
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -58,7 +70,7 @@ include 'db_connection.php';
 
 <?php
 // Get uploaded file
-$target_dir = "clips/";
+$target_dir = "original_clips/";
 $file_name = $_FILES["file_to_upload"]["name"];
 $clip_title = str_replace(".mp4", "", $file_name);
 $target_file = $target_dir . basename($file_name);
@@ -84,6 +96,11 @@ if (file_exists($target_file)) {
 // if everything is ok, try to upload file
 else {
     if (move_uploaded_file($_FILES["file_to_upload"]["tmp_name"], $target_file)) {
+        // create a thumbnail of the video
+        $thumbnailFile = "thumbnails/" . pathinfo($target_file, PATHINFO_FILENAME) . ".jpg";
+        generateThumbnail($target_file, $thumbnailFile);
+        compress_clip($target_file);
+
         echo "The file " . htmlspecialchars(basename($_FILES["file_to_upload"]["name"])) . " has been uploaded. <br>";
     } else {
         $upload_ok = 0;
