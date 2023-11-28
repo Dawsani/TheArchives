@@ -4,13 +4,13 @@ include 'db_connection.php';
 
 // Function to generate a thumbnail using FFmpeg
 function generateThumbnail($inputVideo, $outputThumbnail) {
-    $ffmpegCommand = "ffmpeg -i \"$inputVideo\" -ss 00:00:00 -frames:v 1 \"$outputThumbnail\"";
+    $ffmpegCommand = "/usr/local/bin/ffmpeg -i \"$inputVideo\" -ss 00:00:00 -frames:v 1 \"$outputThumbnail\"";
     exec($ffmpegCommand);
 }
 
 function compress_clip($inputVideo) {
     $output_file = "clips/" . pathinfo($inputVideo, PATHINFO_FILENAME) . ".mp4";
-    $ffmpegCommand = "ffmpeg -i \"$inputVideo\" -s 852x480 -r 30 -c:v libx264 -crf 23 -c:a aac -b:a 128k \"$output_file\" > output.txt 2>&1";
+    $ffmpegCommand = "/usr/local/bin/ffmpeg -i \"$inputVideo\" -s 852x480 -r 30 -c:v libx264 -crf 23 -c:a aac -b:a 128k \"$output_file\" > output.txt 2>&1";
     exec($ffmpegCommand, $output, $returnCode);
 }
 
