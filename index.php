@@ -85,7 +85,7 @@ include 'db_connection.php';
   $offset = ($currentPage - 1) * $clipsPerPage;
 
   // Display clips based on pagination
-  $sql = "SELECT clip.id as cid, title, post_date, name FROM clip JOIN game ON clip.game_id = game.id ORDER BY cid DESC LIMIT $clipsPerPage OFFSET $offset;";
+  $sql = "SELECT clip.id as cid, title, post_date, name FROM clip JOIN game ON clip.game_id = game.id ORDER BY post_date DESC, cid DESC LIMIT $clipsPerPage OFFSET $offset;";
   $result = $mysqli->query($sql);
 
   if ($result->num_rows > 0) {
