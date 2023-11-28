@@ -184,7 +184,7 @@ if ($users_are_selected == 1) {
 }
 
 // Set the number of clips to show per page
-$clipsPerPage = 21;
+$clipsPerPage = 1024;
 
 // Get the page number from the URL or set it to 1 if not present
 $currentPage = isset($_GET['page']) ? (int)$_GET['page'] : 1;
