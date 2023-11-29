@@ -112,7 +112,7 @@ include 'db_connection.php'
             <br>
             <div id="game_radio_list">
                 <?php
-                $sql = "SELECT id, name FROM game";
+                $sql = "SELECT id, name FROM game ORDER BY name";
                 $result = $mysqli->query($sql);
                 while ($row = mysqli_fetch_assoc($result)) {
                     echo '<input type="radio" name="selected_game_id" value="' . $row['id'] . '"><label for="' . $row['id'] . '">' . $row['name'] . '<br></label>';
