@@ -29,7 +29,7 @@ else {
 
 $host = "localhost";
 $username = "root";
-$user_pass = "root";
+$user_pass = "b5Aw!36Fk%4zVU4N";
 $database_in_use = "clips_schema";
 
 $mysqli = new mysqli($host, $username, $user_pass, $database_in_use);
