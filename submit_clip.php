@@ -70,7 +70,7 @@ function compress_clip($inputVideo) {
 
 <?php
 // Get uploaded file
-$target_dir = "original_clips/";
+$target_dir = "clips/";
 $file_name = $_FILES["file_to_upload"]["name"];
 $clip_title = str_replace(".mp4", "", $file_name);
 $target_file = $target_dir . basename($file_name);
@@ -78,23 +78,19 @@ $upload_ok = 1;
 $image_file_type = strtolower(pathinfo($target_file, PATHINFO_EXTENSION));
 
 // Check if file is of correct type
-if ($image_file_type == "mp4") {
-    $upload_ok = 1;
-} else {
+if ($image_file_type != "mp4") {
     $upload_ok = 0;
-    echo "File is not a video. <br>";
-    //header("Location: ../?upload=not_a_video_file");
+    echo "File is not a video. You file was of type " . $image_file_type . "<br>";
 }
 
 // Check if file already exists
 if (file_exists($target_file)) {
     $upload_ok = 0;
-    echo "Sorry, file already exists. <br>";
-    //header("Location: ../?upload=file_" . $target_file . "_already_exists");
+    echo "File \"" . $target_file . "\" already exists. <br>";
 }
 
 // if everything is ok, try to upload file
-else {
+if ($upload_ok == 1) {
     if (move_uploaded_file($_FILES["file_to_upload"]["tmp_name"], $target_file)) {
         // create a thumbnail of the video
         $thumbnailFile = "thumbnails/" . pathinfo($target_file, PATHINFO_FILENAME) . ".jpg";
@@ -104,8 +100,7 @@ else {
         echo "The file " . htmlspecialchars(basename($_FILES["file_to_upload"]["name"])) . " has been uploaded. <br>";
     } else {
         $upload_ok = 0;
-        echo "Sorry, there was an error uploading your file.<br>";
-        //header("Location: ../?upload=error_uploading");
+        echo "There was an error uploading your file.<br>";
     }
 }
 
