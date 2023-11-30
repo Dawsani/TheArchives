@@ -1,0 +1,149 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html lang="en">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html;charset=utf-8">
+		
+	<title>CSCI 441 - Computer Graphics</title>
+
+   	<style type="text/css">
+		ul.navigate { list-style-type:none; }
+
+		bodyclass { font-size: 13px; color: #002b5b; font-family: Arial, Helvetica, sans-serif; }
+
+td {color: #002b5b; font-family: Arial, Helvetica, sans-serif;}
+
+a {color: #006400; font-weight:bold; text-decoration:none;}
+
+a:hover, #more-articles:hover {color: #002b5b; text-decoration:underline;}
+
+h1 { font-family: Arial, Helvetica, sans-serif; color: #002b5b; }
+h2 { font-family: Arial, Helvetica, sans-serif; color: #002b5b; }
+h3 { font-family: Arial, Helvetica, sans-serif; color: #002b5b; }
+
+p { line-height:1.5; font-size: 14px; font-family: Arial, Helvetica, sans-serif; text-align:justify; }
+
+img { border:0 }
+
+div.backgroundbox {
+	width: 100%;
+	height: 100%;
+	background-color: #004200;
+	position: fixed;
+	left: 0;
+	top: 0;
+	z-index: -1;
+}
+
+td.header { text-align:center; border-style:solid none solid none; border-color:#ffffff; border-width:2px; background-color:#ffffff;}
+
+td.mainContent { background-color:#ffffff; color:#002b5b; font-family: Arial, Helvetica, sans-serif; padding:15px; vertical-align:top; line-height:1.5;}
+
+.mainContent a:hover { color: #002b5b; text-decoration:underline; }
+
+li { text-align:justify; }
+
+	</style>
+  </head>
+  
+  <body class="bodyclass">
+<div class="backgroundbox"></div>
+<div style="text-align:center; width:800px; margin:auto;" id="top">
+
+<table border="0" cellpadding="2" cellspacing="2" width="800">
+<tr>
+	<td style="vertical-align:middle; text-align:center; height:150px; background-color:#ffffff;" colspan=2>
+		<h1 style="color:#002b5b;">CSCI 441 - Computer Graphics</h1>
+		<h2 style="color:#002b5b;">Fall 2023</h2>
+	</td>
+</tr>
+<tr><td class="header" style="height:30px;" colspan="2">
+| &nbsp;
+&nbsp; <a href="https://cs-courses.mines.edu/csci441/index.html">Home</a> &nbsp; | 
+&nbsp; <a href="https://cs-courses.mines.edu/csci441/assignments.html">Assignments</a> &nbsp;| 
+&nbsp; <a href="https://cs-courses.mines.edu/csci441/leaderboard.html">Leaderboard</a> &nbsp;| 
+&nbsp; <a href="https://cs-courses.mines.edu/csci441/schedule.html">Schedule</a> &nbsp;| 
+&nbsp; <a href="https://cs-courses.mines.edu/csci441/resources.html">Resources</a> &nbsp; 
+&nbsp;|
+
+</td></tr>
+
+<tr><td class="mainContent" colspan="2">
+
+
+
+
+<!--  THIS IS AN HTML COMMENT -->
+
+<!-- Change "YOUR HERO NAME" to...your hero's name! -->
+<h3> Dawsani </h3>
+
+<!-- The line below will display an image -->
+<!-- Place your screenshot into the images folder, and then update the filename below -->
+<!-- For future assignments, you will want to display all of your images 
+        so keep adding them to this list with a description of each -->
+<img src="images/banner.png">
+    
+<!-- The <br> tag inserts a new line onto the page -->
+<br>
+In my banner, every letter is made of one GL_TRIANGLE_STRIP except for the "S" and "I".
+The "S" is actually two identical GL_TRIANGLE_STRIPs, one being rotated upside 
+down to make it look like one seamless letter. I also make use of the GL_TRIANGLE_FAN 
+for the background, and good old GL_TRIANGLES for the letter "I". I did a lot of drawing the letters 
+out and then plotting where the points would need to be to make them one continuous 
+GL_TRIANGLE_STRIP, as seen in the image below.
+
+<img src="images/banner_work.png">
+<br>
+<img src="images/a2.png">
+<br>
+This program features my character, Dawsani the water bottle, walking around the world map. 
+Dawsani constantly bobs up and down with an idle animation. He also constantly looks toward the users mouse. 
+Both his eyes and his pupils within each eye look towards the direction of the mouse cursor. 
+Lastly, to fulfil the requirements of the achievement Point, Set, Match, Dawsani will teleport forward in the 
+direction he is walking when you click the mouse as long as he is walking. This combines the 
+directional keys and the mouse for one input.
+<br><br>
+<h3>Side Quest 1 - All Your Base Are Belong To Me</h3>
+<img src="images/SQ1.png">
+<br>
+My game is a clone of the game Jump King, in which the player needs to jump from platform to 
+platform and make it to the very top to win. The ultimate goal of the game 
+is to make it to the top as quickly as you can. The conflict the player 
+faces is gravity, which will often cause them to fall further down than 
+they jump up when they miss a jump. You will lose this game if you fail 
+to reach the top within 5 minutes. I have a record of 43.9495 seconds 
+and hope someone comes along and beats that!
+
+<br><br>
+<h3>Assignment 3: A Cabin in the Woods</h3>
+<img src="images/A3.png">
+<br>
+This program creates a 3d world with a grass floor and buildings with my character, Dawsani the water bottle at it's center. Users may run around this world to explore.
+
+<br><br>
+<h3>Midterm Project</h3>
+<img src="images/MP.png">
+<br>
+This is a collaborative where there are three characters, Dawsani the water bottle, Bingleton the gnome creature, and M.C. Ride the person that are all controllable and can be viewed from any one of three cameras: First person, arcball, and free camera. Switch between the camera types with the 1, 2 and 2 keys.
+
+<br><br>
+<h3>Assignment 4: Off to Neverland</h3>
+<img src="images/A4.png">
+<br>
+This program takes place in a strange world where Dawsani the water bottle finds himself on a metal plane, with a blue sky above and colorful buildings all around him. There is a gold cube with black eyes floating around him following a bezier curve that seems to stay around him no matter where he goes!
+</td></tr>
+
+<tr>
+<td class="header" style="height:30px" colspan="2">
+<div style="text-align:left; padding-left:25px; padding-right:475px; font-style:italic; display:inline;"></div>
+<div style="text-align:right; padding-right:25px; display:inline;"><a href="#top">[Top]</a></div>
+</td>
+</tr>
+
+</table>
+
+<br><br>
+
+</div>
+</body>
+</html>
