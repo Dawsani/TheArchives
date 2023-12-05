@@ -209,7 +209,7 @@ if ($result->num_rows > 0) {
     echo "<div class=\"video-container\">";
     while ($row = $result->fetch_assoc()) {
       echo "<div class='video-card'>
-              <b>" . $row["title"] . "</b> " . $row["name"] . " " . $row["post_date"] . "<br>
+              <b>" . $row["title"] . "</b><br>
               <img id='thumbnail-" . $row["cid"] . "' src='thumbnails/" . $row["title"] . ".jpg' onclick=\"toggleVideo('" . $row['cid'] . "', '" . $row['title'] . "')\">
               <video id='video-player-" . $row["cid"] . "' controls style='display: none;'>
                 <!-- Initially, no source is specified -->
